@@ -1,3 +1,3 @@
-# madams-dev
+# Matt Adams
 
-Hi World
+Hi, World!
