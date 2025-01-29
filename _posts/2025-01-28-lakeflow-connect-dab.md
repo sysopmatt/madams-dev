@@ -105,6 +105,9 @@ First you will need to setup a connection to SQL Server in Unity Catalog -> Exte
 
 On the first tab, it's imporant to select SQL Server as the connection type, and username and password as the auth type.  Other than that, it should be pretty straight forward when you fill these out.
 
+![Source: Databricks](/assets/img/create-connection.png "Source: Databricks")
+
+
 ## Databricks Asset Bundle - Setup
 
 I have created a template internally that we use for quickly deploying new DABs, but for this example I'll go ahead and use one of the default templates built into the Databricks CLI.
