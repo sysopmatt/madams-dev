@@ -6,3 +6,6 @@ vendor
 
 # a place to stash posts that aren't ready to go yet
 _posts_future
+
+.DS_Store
+/*/.DS_Store
