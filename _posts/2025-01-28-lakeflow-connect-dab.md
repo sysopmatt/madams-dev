@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Databricks LakeFlow Connect Using Databricks Asset Bundles (DAB) for SQL Server Replication"
+title: "Using Databricks Asset Bundles (DAB) to deploy LakeFlow Connect for SQL Server Replication"
 subtitle: Implementing CI/CD build pipeline with DABs for Lakeflow Connect replication
 thumbnail-img: /assets/img/lakeflow-database-connector-components.png
 share-img: /assets/img/lakeflow-database-connector-components.png
