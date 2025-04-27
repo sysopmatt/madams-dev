@@ -181,16 +181,17 @@ Now that you have the `sorted_subfolders_final.csv` file containing the aggregat
 
 There are several ways to upload data to Databricks, but one of the simplest for a single CSV file is using the UI:
 
-1.  In your Databricks workspace, navigate to the desired catalog and schema in the **Data Explorer**.
-2.  Click the **+ Add** button and select **Upload file**.
-3.  Alternatively, click the **+ New** button in the top-left corner, select **Add data**, then **Upload file**.
-    ![Databricks Add Data Menu](/assets/img/dbx-add-data-menu.png "Databricks UI: + New -> Add data")
-4.  Drag and drop your `sorted_subfolders_final.csv` file or browse to select it.
+1.  In your Databricks workspace, navigate to the desired volume in the **Data Explorer**.
+2.  Select **Upload file**.
     ![Databricks Upload Data Dialog](/assets/img/dbx-upload-dialog.png "Databricks UI: Upload data dialog")
+3.  Once uploaded to a volume, find the menu on the file and select **Create Table**.
     ![Databricks Create Table Preview](/assets/img/dbx-create-table-preview.png "Databricks UI: Create table preview screen")
-5.  Follow the prompts to create a new table. Choose the target catalog and schema where you have `CREATE TABLE` permissions. Make sure to note the table name you choose (e.g., `uploaded_blob_sizes`).
-6.  Preview the table and ensure the schema inference correctly identifies the `Subfolder` as `STRING`, `Size` as a numeric type (like `BIGINT` or `DOUBLE`), and `Timestamp` as `STRING` or `TIMESTAMP`. Adjust types if necessary.
-7.  Click **Create table**.
+4.  Alternatively, click the **+ New** button in the top-left corner, select **Add data**, then **Upload file**.
+    ![Databricks Add Data Menu](/assets/img/dbx-add-data-menu.png "Databricks UI: + New -> Add data")
+5.  Drag and drop your `sorted_subfolders_final.csv` file or browse to select it.
+6.  Follow the prompts to create a new table. Choose the target catalog and schema where you have `CREATE TABLE` permissions. Make sure to note the table name you choose (e.g., `uploaded_blob_sizes`).
+7.  Preview the table and ensure the schema inference correctly identifies the `Subfolder` as `STRING`, `Size` as a numeric type (like `BIGINT` or `DOUBLE`), and `Timestamp` as `STRING` or `TIMESTAMP`. Adjust types if necessary.
+8.  Click **Create table**.
 
 ### Analyzing Table Sizes with PySpark
 
