@@ -212,3 +212,16 @@ To create a new project based on this official template structure:
 # Conclusion
 
 Following the official Databricks Asset Bundle template structure using `databricks_template_schema.json` provides a robust and standardized way to create reusable project starters. While slightly more complex initially, it clearly separates prompt definitions from configuration logic, leading to cleaner and more maintainable templates, especially as they grow in complexity.
+
+# References
+
+Here are links to the official documentation for the key concepts discussed in this post:
+
+*   **Databricks Asset Bundles Documentation**
+    *   [Databricks Asset Bundles overview](https://docs.databricks.com/en/dev-tools/bundles/index.html) - Main documentation for DABs.
+    *   [Develop a Databricks Asset Bundle template](https://docs.databricks.com/en/dev-tools/bundles/templates.html) - Official guide on creating templates, including the `databricks_template_schema.json` structure.
+    *   [Databricks Asset Bundles configuration](https://docs.databricks.com/en/dev-tools/bundles/settings.html) - Details on `databricks.yml` settings.
+*   **Go Templates**
+    *   [Go `text/template` Package Documentation](https://pkg.go.dev/text/template) - Official documentation for the Go template language used by Databricks Asset Bundles for variable substitution (`{{.variable_name}}`).
+*   **JSON Schema**
+    *   [JSON Schema Documentation](https://json-schema.org/) - Official website and specification for the JSON Schema standard used in `databricks_template_schema.json`.
