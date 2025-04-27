@@ -38,8 +38,11 @@ except Exception as e:
 subfolder_sizes = defaultdict(int)
 count_of_batches_written = 0 # Counter for intermediate saves
 
-def list_blobs_recursive(container_client, prefix):
+def list_blobs_recursive(container_client, prefix, processed_blobs_set=set()):
     print(f"Starting scan for prefix: '{prefix}' using list_blobs")
+    if processed_blobs_set:
+        print(f"Found {len(processed_blobs_set)} previously processed blobs to skip.")
+
     try:
         blobs_iterator = container_client.list_blobs(name_starts_with=prefix)
     except Exception as e:
@@ -48,22 +51,33 @@ def list_blobs_recursive(container_client, prefix):
 
     batch_data = []
     processed_blobs_total = 0
+    processed_in_this_run = 0
+    skipped_count = 0
     blobs_in_current_batch = 0
 
     print("Iterating through blobs found...")
     try:
         for blob in blobs_iterator:
-            subfolder = blob.name
-            subfolder_sizes[subfolder] += blob.size
-            batch_data.append((subfolder, blob.size))
-            processed_blobs_total += 1
-            blobs_in_current_batch += 1
+            processed_blobs_total += 1 # Count every blob listed
+            if blob.name not in processed_blobs_set:
+                # Process only blobs not seen before in the intermediate file
+                subfolder = blob.name
+                subfolder_sizes[subfolder] += blob.size
+                batch_data.append((subfolder, blob.size))
+                processed_in_this_run += 1
+                blobs_in_current_batch += 1
 
-            if blobs_in_current_batch >= BATCH_SIZE:
-                save_batch_to_csv(batch_data)
-                print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed batch of {len(batch_data)}. Total blobs scanned so far: {processed_blobs_total}")
-                batch_data.clear()
-                blobs_in_current_batch = 0
+                if blobs_in_current_batch >= BATCH_SIZE:
+                    save_batch_to_csv(batch_data)
+                    print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed batch of {len(batch_data)}. Total blobs scanned so far (incl. skipped): {processed_blobs_total}. Added in this run: {processed_in_this_run}")
+                    batch_data.clear()
+                    blobs_in_current_batch = 0
+            else:
+                skipped_count += 1
+                # Optional: Print skip message periodically to avoid flooding logs
+                # if skipped_count % 10000 == 0:
+                #     print(f"Skipped {skipped_count} already processed blobs...")
+
 
     except Exception as e:
         print(f"An error occurred while listing blobs: {e}")
@@ -71,10 +85,10 @@ def list_blobs_recursive(container_client, prefix):
         # Save any remaining blobs in the last batch
         if batch_data:
             save_batch_to_csv(batch_data)
-            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed final batch of {len(batch_data)}.")
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed final batch of {len(batch_data)}. Total blobs scanned so far (incl. skipped): {processed_blobs_total}. Added in this run: {processed_in_this_run}")
 
-    print(f"Finished scanning prefix '{prefix}'. Total actual blobs found: {processed_blobs_total}")
-    return processed_blobs_total
+    print(f"Finished scanning prefix '{prefix}'. Total blobs listed by API: {processed_blobs_total}. Blobs added/processed in this run: {processed_in_this_run}. Skipped: {skipped_count}")
+    return processed_in_this_run # Return count of blobs processed *in this run*
 
 def save_batch_to_csv(batch_data):
     global count_of_batches_written
@@ -114,11 +128,32 @@ def merge_and_sort_data():
 
 # --- Main Execution ---
 if __name__ == "__main__":
-    total_processed = list_blobs_recursive(container_client, SCAN_PREFIX)
+    processed_blobs_set = set()
+    if os.path.isfile(OUTPUT_CSV_INTERMEDIATE):
+        print(f"Intermediate file '{OUTPUT_CSV_INTERMEDIATE}' found. Loading previously processed blob paths...")
+        try:
+            # Read only the 'Subfolder' column to save memory
+            processed_df = pd.read_csv(OUTPUT_CSV_INTERMEDIATE, usecols=['Subfolder'], dtype={'Subfolder': str})
+            processed_blobs_set = set(processed_df['Subfolder'])
+            print(f"Loaded {len(processed_blobs_set)} paths from intermediate file.")
+        except FileNotFoundError:
+            print("Intermediate file mentioned but not found (race condition?). Starting fresh.")
+        except pd.errors.EmptyDataError:
+             print("Intermediate file is empty. Starting fresh.")
+        except KeyError:
+             print(f"Intermediate file '{OUTPUT_CSV_INTERMEDIATE}' does not contain 'Subfolder' column. Cannot resume safely. Please check or remove the file. Exiting.")
+             exit()
+        except Exception as e:
+            print(f"Error reading intermediate file '{OUTPUT_CSV_INTERMEDIATE}': {e}. Cannot resume safely. Please check or remove the file. Exiting.")
+            exit()
 
-    if total_processed > 0:
+    total_processed_this_run = list_blobs_recursive(container_client, SCAN_PREFIX, processed_blobs_set)
+
+    # Run merge and sort only if the intermediate file exists (either pre-existing or created in this run)
+    if os.path.isfile(OUTPUT_CSV_INTERMEDIATE):
+        print("Proceeding to final merge and sort step.")
         merge_and_sort_data()
     else:
-        print("No blobs were processed. Final report will not be generated.")
+        print("No blobs were processed and intermediate file was not created. Final report will not be generated.")
 
     print("Script finished.") 

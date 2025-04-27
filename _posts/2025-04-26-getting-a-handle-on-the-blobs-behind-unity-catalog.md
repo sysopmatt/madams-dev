@@ -34,27 +34,30 @@ pip install azure-storage-blob azure-identity pandas
 
 This script connects to your Azure Blob Storage account, iterates through blobs under a specific path (typically where your Unity Catalog managed tables reside), calculates the total size for each logical "subfolder" (representing tables or partitions), and outputs the results to CSV files. It processes blobs in batches to handle potentially large numbers of files efficiently and saves intermediate results to `sorted_subfolders.csv`. The final, sorted list of folders and their sizes is saved to `sorted_subfolders_final.csv`.
 
+**The script includes logic to be restartable.** If it's stopped and rerun, it will load the paths from the intermediate `sorted_subfolders.csv` file and skip processing blobs it has already recorded, effectively resuming where it left off.
+
+**Download Full Script:**
+
+*   [Python Blob Analysis Script (`analyze_uc_blob_sizes.py`)](https://github.com/sysopmatt/madams-dev/blob/main/assets/blog_post_assets/getting-a-handle-on-the-blobs-behind-unity-catalog/analyze_uc_blob_sizes.py)
+
 **Configuration:** You only need to modify the variables in the `USER CONFIGURATION` section at the top of the script:
 
 1.  `ACCOUNT_NAME`: The name of your Azure Blob Storage account where your Unity Catalog metastore is configured. (Find this in the Azure Portal under Storage Accounts).
 2.  `CONTAINER_NAME`: The specific container within the storage account used by your metastore. (Find this in the Azure Portal within your storage account's Containers section).
 3.  `SCAN_PREFIX`: The starting path within the container to scan. For managed Unity Catalog tables, this is typically `'metastore/<your metastore uuid>/tables/'`. Replace `<your metastore uuid>` with the actual UUID. Adjust this path if you need to scan external table locations or other directories.
+4.  `OUTPUT_CSV_INTERMEDIATE` / `OUTPUT_CSV_FINAL`: Names for the intermediate and final output files.
+5.  `BATCH_SIZE`: How many blob records to process before writing an intermediate batch to the CSV (adjust based on memory constraints if needed).
 
 **Important Considerations:**
 
 *   **Scope:** The default `SCAN_PREFIX` targets **managed** tables. If you need to analyze external tables, you must change this prefix to match the root path(s) of your external table locations in blob storage.
 *   **Performance:** For metastores managing an extremely large number of files (millions or billions), running this Python script locally might take a significant amount of time and memory. Consider running it on a VM with a good network connection to Azure or exploring alternative approaches for very large-scale scenarios.
 
-Here is the script:
+Below are the key sections of the script. For the full implementation including Azure client initialization, helper functions (`save_batch_to_csv`, `merge_and_sort_data`), and the main execution block with restart logic, please refer to the [downloadable script file](https://github.com/sysopmatt/madams-dev/blob/main/assets/blog_post_assets/getting-a-handle-on-the-blobs-behind-unity-catalog/analyze_uc_blob_sizes.py).
+
+**Script Configuration:**
 
 ```python
-import pandas as pd
-from azure.storage.blob import BlobServiceClient, BlobPrefix
-from azure.identity import DefaultAzureCredential
-from collections import defaultdict
-import os
-from datetime import datetime
-
 # ===============================================
 # === USER CONFIGURATION ========================
 # ===============================================
@@ -70,26 +73,18 @@ BATCH_SIZE = 10000 # Number of blobs to process before saving intermediate resul
 # ===============================================
 # === END USER CONFIGURATION ====================
 # ===============================================
+```
 
-# Initialize the BlobServiceClient with AAD authentication
-print("Initializing Azure Blob Service Client...")
-try:
-    credential = DefaultAzureCredential()
-    blob_service_client = BlobServiceClient(account_url=f"https://{ACCOUNT_NAME}.blob.core.windows.net", credential=credential)
-    # Initialize the container client
-    container_client = blob_service_client.get_container_client(CONTAINER_NAME)
-    print("Client initialized successfully.")
-except Exception as e:
-    print(f"Error initializing Azure client: {e}")
-    print("Please ensure Azure CLI is logged in (`az login`) and has permissions to the storage account.")
-    exit()
+**Core Blob Listing Logic (`list_blobs_recursive` function):**
 
-# Dictionary to store the size of each subfolder (full blob path)
-subfolder_sizes = defaultdict(int)
-count_of_batches_written = 0 # Counter for intermediate saves
+This function iterates through blobs using `container_client.list_blobs` starting at the specified `prefix`. It checks a set of `processed_blobs_set` (loaded from the intermediate file on restart) to skip blobs that have already been recorded. It accumulates new blob information in batches and calls `save_batch_to_csv` periodically.
 
-def list_blobs_recursive(container_client, prefix):
+```python
+def list_blobs_recursive(container_client, prefix, processed_blobs_set=set()):
     print(f"Starting scan for prefix: '{prefix}' using list_blobs")
+    if processed_blobs_set:
+        print(f"Found {len(processed_blobs_set)} previously processed blobs to skip.")
+
     try:
         blobs_iterator = container_client.list_blobs(name_starts_with=prefix)
     except Exception as e:
@@ -98,81 +93,48 @@ def list_blobs_recursive(container_client, prefix):
 
     batch_data = []
     processed_blobs_total = 0
+    processed_in_this_run = 0
+    skipped_count = 0
     blobs_in_current_batch = 0
 
     print("Iterating through blobs found...")
     try:
         for blob in blobs_iterator:
-            subfolder = blob.name
-            subfolder_sizes[subfolder] += blob.size
-            batch_data.append((subfolder, blob.size))
-            processed_blobs_total += 1
-            blobs_in_current_batch += 1
+            processed_blobs_total += 1 # Count every blob listed
+            if blob.name not in processed_blobs_set:
+                # Process only blobs not seen before in the intermediate file
+                subfolder = blob.name
+                # Note: The full script accumulates size in a defaultdict called subfolder_sizes
+                # subfolder_sizes[subfolder] += blob.size
+                batch_data.append((subfolder, blob.size))
+                processed_in_this_run += 1
+                blobs_in_current_batch += 1
 
-            if blobs_in_current_batch >= BATCH_SIZE:
-                save_batch_to_csv(batch_data)
-                print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed batch of {len(batch_data)}. Total blobs scanned so far: {processed_blobs_total}")
-                batch_data.clear()
-                blobs_in_current_batch = 0
+                if blobs_in_current_batch >= BATCH_SIZE:
+                    # Note: The full script calls save_batch_to_csv(batch_data) here
+                    print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed batch of {len(batch_data)}. Total blobs scanned so far (incl. skipped): {processed_blobs_total}. Added in this run: {processed_in_this_run}")
+                    batch_data.clear()
+                    blobs_in_current_batch = 0
+            else:
+                skipped_count += 1
+                # Optional: Print skip message periodically to avoid flooding logs
+                # if skipped_count % 10000 == 0:
+                #     print(f"Skipped {skipped_count} already processed blobs...")
+
 
     except Exception as e:
         print(f"An error occurred while listing blobs: {e}")
     finally:
         # Save any remaining blobs in the last batch
         if batch_data:
-            save_batch_to_csv(batch_data)
-            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed final batch of {len(batch_data)}.")
+            # Note: The full script calls save_batch_to_csv(batch_data) here
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Processed final batch of {len(batch_data)}. Total blobs scanned so far (incl. skipped): {processed_blobs_total}. Added in this run: {processed_in_this_run}")
 
-    print(f"Finished scanning prefix '{prefix}'. Total actual blobs found: {processed_blobs_total}")
-    return processed_blobs_total
-
-def save_batch_to_csv(batch_data):
-    global count_of_batches_written
-    df = pd.DataFrame(batch_data, columns=['Subfolder', 'Size'])
-    df['Timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    is_new_file = not os.path.isfile(OUTPUT_CSV_INTERMEDIATE)
-    try:
-        df.to_csv(OUTPUT_CSV_INTERMEDIATE, mode='a', header=is_new_file, index=False)
-        count_of_batches_written += 1
-        if is_new_file:
-            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Created {OUTPUT_CSV_INTERMEDIATE} and wrote first batch ({len(df)} rows)")
-    except Exception as e:
-        print(f"Error saving batch to CSV {OUTPUT_CSV_INTERMEDIATE}: {e}")
-
-def merge_and_sort_data():
-    print(f"Aggregating and sorting data from {OUTPUT_CSV_INTERMEDIATE}...")
-
-    if not os.path.isfile(OUTPUT_CSV_INTERMEDIATE):
-        print(f"Intermediate file {OUTPUT_CSV_INTERMEDIATE} not found. Cannot generate final report. Was the scan successful?")
-        return
-
-    try:
-        # Read all data written during the scan
-        all_data = pd.read_csv(OUTPUT_CSV_INTERMEDIATE)
-
-        # Aggregate the sizes per unique blob path (Subfolder)
-        # The intermediate file might contain multiple entries if script was rerun, sum them up.
-        aggregated_data = all_data.groupby('Subfolder')['Size'].sum().reset_index()
-        aggregated_data['Timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S') # Add final timestamp
-
-        # Sort by size
-        sorted_data = aggregated_data.sort_values(by='Size', ascending=False)
-        sorted_data.to_csv(OUTPUT_CSV_FINAL, index=False)
-        print(f"Final aggregated and sorted data written to {OUTPUT_CSV_FINAL}")
-    except Exception as e:
-         print(f"Error during final aggregation and sort: {e}")
-
-# --- Main Execution ---
-if __name__ == "__main__":
-    total_processed = list_blobs_recursive(container_client, SCAN_PREFIX)
-
-    if total_processed > 0:
-        merge_and_sort_data()
-    else:
-        print("No blobs were processed. Final report will not be generated.")
-
-    print("Script finished.")
+    print(f"Finished scanning prefix '{prefix}'. Total blobs listed by API: {processed_blobs_total}. Blobs added/processed in this run: {processed_in_this_run}. Skipped: {skipped_count}")
+    return processed_in_this_run # Return count of blobs processed *in this run*
 ```
+
+*(The full script also includes `save_batch_to_csv` for writing intermediate results and `merge_and_sort_data` for creating the final sorted output file.)*
 
 ## Loading and Analyzing Data in Databricks
 
