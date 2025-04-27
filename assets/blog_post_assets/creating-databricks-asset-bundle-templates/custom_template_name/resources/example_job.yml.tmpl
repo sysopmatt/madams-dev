@@ -1,0 +1,22 @@
+# Located inside template/{{.project_name}}/resources/{{.project_name}}_job.yml.tmpl
+resources:
+  jobs:
+    # Resource key can also use variables if needed, though static is often simpler
+    {{.project_name}}_job:
+      name: "[{{.project_name}}] Basic Job (${bundle.target})"
+      tags:
+        project: "{{.project_name}}"
+        purpose: "{{.bundle_purpose}}"
+        source: "DAB Template"
+      tasks:
+        - task_key: run_notebook
+          notebook_task:
+            # Path relative to the root of the *generated* bundle (databricks.yml location)
+            notebook_path: ../src/placeholder_notebook.py
+      permissions:
+       {{- if .team_permission_group }}
+        - level: CAN_MANAGE
+          group_name: "{{.team_permission_group}}"
+       {{- end }}
+        - level: CAN_VIEW
+          group_name: users 

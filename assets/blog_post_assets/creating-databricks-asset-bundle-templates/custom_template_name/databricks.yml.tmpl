@@ -1,0 +1,29 @@
+# Located inside template/{{.project_name}}/databricks.yml.tmpl
+bundle:
+  # Bundle name is derived from the directory name created by init
+  name: {{.project_name}}
+
+# Define deployment targets using the input variables
+targets:
+  dev:
+    mode: development
+    default: true
+
+  prod:
+    mode: production
+    host: "{{.databricks_host_prod}}" # Use {{.variable_name}}
+    root_path: "{{.workspace_root_path}}/{{.project_name}}/prod"
+
+# Include resource definition files
+# Path is relative to this databricks.yml.tmpl file
+include:
+  - resources/*.yml
+
+# Define permissions for the bundle artifacts using input variables
+permissions:
+  - level: CAN_MANAGE
+    {{- if .team_permission_group }}
+    group_name: "{{.team_permission_group}}"
+    {{- end }}
+  - level: CAN_VIEW
+    group_name: users 

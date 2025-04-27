@@ -2,9 +2,7 @@
 layout: post
 title: "From Batch to Streaming: Supercharging Data Freshness on Azure Databricks"
 subtitle: Batch processing was all we needed, until it wasn't.
-thumbnail-img: /assets/img/data-stack.jpg
-share-img: /assets/img/path.jpg
-tags: ["data engineering", "databricks", "delta live tables", "spark"]
+tags: ["user story", "data engineering", "databricks", "delta live tables", "spark"]
 author: Matt Adams
 ---
 

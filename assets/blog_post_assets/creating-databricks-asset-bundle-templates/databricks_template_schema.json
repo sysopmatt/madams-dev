@@ -1,0 +1,33 @@
+{
+  "properties": {
+    "project_name": {
+      "type": "string",
+      "description": "Enter a short, descriptive name for this project (used in names, paths)",
+      "default": "my_databricks_project"
+    },
+    "bundle_purpose": {
+      "type": "string",
+      "description": "Select the primary purpose (e.g., ETL, Analytics, ML Training, ML Inference)",
+      "default": "Analytics"
+    },
+    "databricks_host_prod": {
+      "type": "string",
+      "description": "Enter the Databricks workspace URL for the PROD environment"
+    },
+    "workspace_root_path": {
+      "type": "string",
+      "description": "Enter the root path in the Databricks workspace for deployment (e.g., /Shared/Bundles)",
+      "default": "/Shared/Bundles"
+    },
+    "team_permission_group": {
+      "type": "string",
+      "description": "Enter the Databricks group name for team MANAGE permissions (optional, leave blank if none)",
+      "default": "data_engineering"
+    }
+  },
+  "required": [
+    "project_name",
+    "bundle_purpose",
+    "databricks_host_prod"
+  ]
+} 

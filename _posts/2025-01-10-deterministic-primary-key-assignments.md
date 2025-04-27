@@ -2,8 +2,6 @@
 layout: post
 title: "Using Deterministic Primary Keys Instead of Identities 🔑"
 subtitle: Asyncronous processing while maintaining foreign-key references in Kimball data modeling
-# thumbnail-img: /assets/img/data-stack.jpg
-# share-img: /assets/img/path.jpg
 tags: ["data engineering", "databricks", "delta live tables", "spark"]
 author: Matt Adams
 ---
