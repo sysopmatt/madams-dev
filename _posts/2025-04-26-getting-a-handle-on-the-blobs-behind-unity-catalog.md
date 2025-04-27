@@ -279,8 +279,8 @@ Here are links to the official documentation for the key technologies and librar
     *   [Azure Blob Storage Documentation](https://docs.microsoft.com/en-us/azure/storage/blobs/) - Overview and concepts.
     *   [Azure SDK for Python Documentation](https://docs.microsoft.com/en-us/azure/developer/python/) - Hub for Python SDKs.
     *   [Quickstart: Azure Blob Storage library for Python](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python) - Getting started with the `azure-storage-blob` library.
-    *   [`BlobServiceClient Class (azure.storage.blob)`](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.13.0/azure.storage.blob.html#azure.storage.blob.BlobServiceClient) - API reference for the main client (adjust version if needed).
-    *   [`list_blobs Method (azure.storage.blob)`](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.13.0/azure.storage.blob.html#azure.storage.blob.ContainerClient.list_blobs) - Details on listing blobs (adjust version if needed).
+    *   [`BlobServiceClient Class (azure.storage.blob)`](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.13.0/azure.storage.blob.html#azure.storage.blob.BlobServiceClient) - API reference for the main client.
+    *   [`list_blobs Method (azure.storage.blob)`](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.13.0/azure.storage.blob.html#azure.storage.blob.ContainerClient.list_blobs) - Details on listing blobs.
     *   [`azure-identity` library for Python](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity?view=azure-python) - Details on authentication methods.
     *   [`DefaultAzureCredential Class (azure.identity)`](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) - Explanation of the default credential chain.
     *   [Azure Command-Line Interface (CLI) Documentation](https://docs.microsoft.com/en-us/cli/azure/) - Main CLI reference.
@@ -290,7 +290,6 @@ Here are links to the official documentation for the key technologies and librar
     *   [Unity Catalog Documentation](https://docs.databricks.com/en/data-governance/unity-catalog/index.html) - Introduction and concepts.
     *   [Managed Tables (Unity Catalog)](https://docs.databricks.com/en/data-governance/unity-catalog/create-tables.html#managed-tables) - Specifics on managed table storage.
     *   [Information Schema (System Tables)](https://docs.databricks.com/en/sql/language-manual/sql-ref-information-schema.html) - Documentation for `system.information_schema`.
-    *   [Upload data using the add data UI (Databricks)](https://docs.databricks.com/en/ingestion/add-data/index.html) - Guide for UI uploads.
 *   **Apache Spark / PySpark Documentation**
     *   [PySpark API Reference](https://spark.apache.org/docs/latest/api/python/index.html) - Main API docs.
     *   [PySpark SQL Module (`pyspark.sql`)](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql.html) - Details on DataFrame operations.
