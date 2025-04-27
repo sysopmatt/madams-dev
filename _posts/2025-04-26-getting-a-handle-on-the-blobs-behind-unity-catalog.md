@@ -6,7 +6,6 @@ tags: ["databricks", "administration", "unity catalog", "blob storage", "azure",
 author: Matt Adams 
 ---
 
-# Introduction
 
 Often when working with Unity Catalog, especially with managed tables, the underlying blob storage structure can feel a bit opaque. Understanding storage consumption at the blob level is crucial for cost analysis, identifying unexpectedly large tables, tracking storage growth patterns, and debugging storage issues. This guide provides a practical approach using Python and PySpark for Databricks administrators, data engineers, and platform owners who need to gain visibility into their managed table storage footprint on Azure Blob Storage.
 
