@@ -223,5 +223,3 @@ Here are links to the official documentation for the key concepts discussed in t
     *   [Databricks Asset Bundles configuration](https://docs.databricks.com/en/dev-tools/bundles/settings.html) - Details on `databricks.yml` settings.
 *   **Go Templates**
     *   [Go `text/template` Package Documentation](https://pkg.go.dev/text/template) - Official documentation for the Go template language used by Databricks Asset Bundles for variable substitution (`{{.variable_name}}`).
-*   **JSON Schema**
-    *   [JSON Schema Documentation](https://json-schema.org/) - Official website and specification for the JSON Schema standard used in `databricks_template_schema.json`.
