@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Matt Adams
-subtitle: Senior Software and Data Engineer
+title: Resume
+subtitle: Senior Data Platform Engineer | Databricks Platform Lead
 ---
 
-_Innovating Health & Life Sciences data solutions with Azure Databricks, Python, SQL, and Spark. Committed to DevOps and security best practices. Active contributor to open-source projects._
+_Innovating Health & Life Sciences data solutions as a Databricks Platform Owner, specializing in Azure, Python, SQL, and Spark. Committed to DevOps and security best practices. Active contributor to open-source projects._
 
 # Achievements
 
@@ -36,6 +36,7 @@ _Innovating Health & Life Sciences data solutions with Azure Databricks, Python,
         *   **Spearheaded the Data Platform Modernization** as technical lead for a team of 12 engineers.
         *   **Converted 600 code packages,** ranging from 1,000 to 20,000 lines of code each.
         *   **Achieved a 4x reduction in nightly ETL processing time.**
+        *   **Onboarded and trained over 100 developers** on new platform tools and best practices during the modernization project.
 *   **Software Developer II** (Nov 2019 - Mar 2022, 2 yrs 5 mos)
     *   _Accomplishments:_
         *   **Implemented master data management (MDM) for provider data,** resolving complex contracting and business relationships within the data modeling process.

@@ -21,7 +21,9 @@ author: Matt Adams
 
 navbar-links:
   Home: "index"
-  About Me (Resume): "aboutme"
+  Resume: "resume"
+  Contributions: "contributions"
+  Projects: "projects"
   # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
   #   - Learn markdown: "https://www.markdowntutorial.com/"
@@ -128,6 +130,16 @@ navbar-var-length: false
 
 # The keywords to associate with your website, for SEO purposes
 #keywords: "my,list,of,keywords"
+
+#######################################
+# --- Jekyll Collections Settings --- #
+#######################################
+
+collections:
+  contributions:
+    output: false # Set to true if you want individual pages for each contribution
+  projects:
+    output: true # Create individual pages for each project
 
 ######################################
 # --- Colours / background image --- #
