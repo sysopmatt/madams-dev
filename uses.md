@@ -12,7 +12,7 @@ This page details the tools and technologies I frequently use for development, d
 
 ### Development Environment
 
-*   **Editor:** Visual Studio Code 
+*   **Editor:** Visual Studio Code
 *   **Terminal:** macOS Terminal 
 *   **Version Control:** Git
 
