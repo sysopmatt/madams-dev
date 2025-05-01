@@ -1,0 +1,61 @@
+---
+layout: default # Use your default page layout
+---
+
+<div class="tag-archive">
+  <h1>Posts tagged with "{{ page.title }}"</h1>
+
+  <ul class="post-list">
+    {% for post in page.posts %}
+      <li>
+        <h2>
+          <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h2>
+        <span class="post-meta">{{ post.date | date: site.date_format }}</span>
+        {% if post.author %}
+          <span class="post-meta"> • {{ post.author }}</span>
+        {% endif %}
+        {% if post.subtitle %}
+          <p class="post-subtitle">{{ post.subtitle }}</p>
+        {% endif %}
+        {% if site.feed_show_excerpt %}
+          <p>{{ post.excerpt | strip_html | truncatewords: site.excerpt_length }}</p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  <hr>
+
+  <!-- Optional: Link back to a main tags index page if you create one -->
+  <!-- <p><a href="/tags/">View all tags</a></p> -->
+
+</div>
+
+<!-- Basic styling suggestion (add to your site's CSS if desired) -->
+<!--
+<style>
+.tag-archive h1 {
+  margin-bottom: 1em;
+}
+.tag-archive .post-list {
+  list-style: none;
+  padding-left: 0;
+}
+.tag-archive .post-list li {
+  margin-bottom: 2em;
+}
+.tag-archive .post-list h2 {
+  margin-bottom: 0.25em;
+}
+.tag-archive .post-list .post-meta {
+  color: #777;
+  font-size: 0.9em;
+}
+.tag-archive .post-list .post-subtitle {
+  font-style: italic;
+  color: #555;
+  margin-top: 0.25em;
+}
+</style>
+--> 

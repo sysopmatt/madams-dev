@@ -21,10 +21,15 @@ author: Matt Adams
 
 navbar-links:
   Home: "index"
-  Resume: "resume"
-  Contributions: "contributions"
-  Projects: "projects"
-  # Resources:
+  Portfolio:
+    - Resume: "resume"
+    - Projects: "projects"
+    - Contribs: "contributions"
+    - Talks: "presentations"
+  Resources: "resources"
+  Uses: "uses"
+  Contact: "contact"
+  # Resources: # Original commented out resources section
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
   #   - Learn markdown: "https://www.markdowntutorial.com/"
   # Author's home: "https://deanattali.com"
@@ -140,6 +145,8 @@ collections:
     output: false # Set to true if you want individual pages for each contribution
   projects:
     output: true # Create individual pages for each project
+  presentations:
+    output: true # Create individual pages for each presentation
 
 ######################################
 # --- Colours / background image --- #
@@ -310,7 +317,20 @@ exclude:
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-archives
 
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
+
+##############################
+# --- jekyll-archives --- #
+##############################
+jekyll-archives:
+  enabled:
+    - tags
+    # - categories # Uncomment if you use categories and want category pages
+  layout: 'tag_archive' # Maps tags page using the specified layout
+  permalinks:
+    tag: '/tags/:name/' # Sets the url for tag pages
+    # category: '/categories/:name/' # Uncomment if using categories
 
