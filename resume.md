@@ -21,6 +21,12 @@ _Innovating Health & Life Sciences data solutions as a Databricks Platform Owner
 
 *   Sole recipient of the Enterprise Innovation award for modernizing our data platform, impacting 1,500 daily internal users and numerous external users.
 
+### Databricks Data + AI Summit 2025 - Co-Speaker
+
+*   **Presented at Databricks Data + AI Summit 2025** as co-speaker and project lead on "Migrating Legacy SAS Code to Databricks Lakehouse: What We Learned Along the Way."
+*   **Shared insights from leading a multi-year migration project** that successfully converted critical reporting data mart from extensive legacy SAS code to the Databricks Lakehouse ecosystem.
+*   **Demonstrated technical leadership** in presenting challenges, methodology (including automation with Alchemist), and key lessons learned from migrating sophisticated logic for membership, claims, premiums, and reserves.
+
 ---
 
 ## Work Experience
