@@ -23,20 +23,20 @@ The official convention for Databricks Asset Bundle templates involves a specifi
 
 1.  **`databricks_template_schema.json` (Root Level):** This JSON file defines the input variables (prompts) presented to the user during `databricks bundle init`. It uses JSON Schema properties to define each prompt's name, description, type, default value, etc.
 2.  **`template/` Directory (Root Level):** This directory contains the actual template files that will be copied and processed to create the new bundle project.
-3.  **`template/{{.project_name}}/` Subdirectory:** Inside the `template` directory, a subdirectory named using the Go template variable `{{.project_name}}` (or another variable defined in the schema) is required. This subdirectory contains the core template files:
+3.  **`template/{% raw %}{{.project_name}}{% endraw %}/` Subdirectory:** Inside the `template` directory, a subdirectory named using the Go template variable `{% raw %}{{.project_name}}{% endraw %}` (or another variable defined in the schema) is required. This subdirectory contains the core template files:
     *   `databricks.yml.tmpl`: The template for the main bundle configuration file.
-    *   `resources/`: A subdirectory typically containing resource definition templates (e.g., `{{.project_name}}_job.yml.tmpl`).
+    *   `resources/`: A subdirectory typically containing resource definition templates (e.g., `{% raw %}{{.project_name}}{% endraw %}_job.yml.tmpl`).
     *   `src/`: A subdirectory typically containing source code like notebooks or Python files.
 
 **Key Differences from Older Methods:**
 
 *   Prompts are defined in `databricks_template_schema.json`, not within a `template:` block in `databricks.yml.tmpl`.
-*   Input variables defined in the JSON schema are accessed within `.tmpl` files using the syntax `{{.variable_name}}` (e.g., `{{.project_name}}`), **without** the `input_` prefix.
-*   The template files reside within the nested `template/{{.project_name}}/` structure.
+*   Input variables defined in the JSON schema are accessed within `.tmpl` files using the syntax `{% raw %}{{.variable_name}}{% endraw %}` (e.g., `{% raw %}{{.project_name}}{% endraw %}`), **without** the `input_` prefix.
+*   The template files reside within the nested `template/{% raw %}{{.project_name}}{% endraw %}/` structure.
 
 **The `.tmpl` Extension Convention:**
 
-As mentioned before, using the `.tmpl` extension for files containing Go template syntax (`{{.variable_name}}`) is a helpful convention for clarity. The `bundle init` command processes these files and saves the output without the `.tmpl` extension in the generated project.
+As mentioned before, using the `.tmpl` extension for files containing Go template syntax (`{% raw %}{{.variable_name}}{% endraw %}`) is a helpful convention for clarity. The `bundle init` command processes these files and saves the output without the `.tmpl` extension in the generated project.
 
 ## Example Official DAB Template
 
@@ -46,10 +46,10 @@ As mentioned before, using the `.tmpl` extension for files containing Go templat
 my-official-dab-template/
 ├── databricks_template_schema.json  # Defines prompts
 └── template/
-    └── {{.project_name}}/             # Core template files reside here
+    └── {% raw %}{{.project_name}}{% endraw %}/             # Core template files reside here
         ├── databricks.yml.tmpl
         ├── resources/
-        │   └── {{.project_name}}_job.yml.tmpl # Resource template using project name
+        │   └── {% raw %}{{.project_name}}{% endraw %}_job.yml.tmpl # Resource template using project name
         └── src/
             └── placeholder_notebook.py
 ```
@@ -98,15 +98,15 @@ my-official-dab-template/
 *   Defines properties for `project_name`, `bundle_purpose`, etc., with types, descriptions, and defaults.
 *   The `required` array lists variables that *must* be provided by the user.
 
-### Bundle Configuration Template (`template/{{.project_name}}/databricks.yml.tmpl`)
+### Bundle Configuration Template (`template/{% raw %}{{.project_name}}{% endraw %}/databricks.yml.tmpl`)
 
-This file is now simpler, as prompts are externalized. Note the variable access `{{.variable_name}}`.
+This file is now simpler, as prompts are externalized. Note the variable access `{% raw %}{{.variable_name}}{% endraw %}`.
 
 ```yaml
-# Located inside template/{{.project_name}}/databricks.yml.tmpl
+# Located inside template/{% raw %}{{.project_name}}{% endraw %}/databricks.yml.tmpl
 bundle:
   # Bundle name is derived from the directory name created by init
-  name: {{.project_name}}
+  name: {% raw %}{{.project_name}}{% endraw %}
 
 # Define deployment targets using the input variables
 targets:
@@ -116,8 +116,8 @@ targets:
 
   prod:
     mode: production
-    host: "{{.databricks_host_prod}}" 
-    root_path: "{{.workspace_root_path}}/{{.project_name}}/prod"
+    host: "{% raw %}{{.databricks_host_prod}}{% endraw %}" 
+    root_path: "{% raw %}{{.workspace_root_path}}{% endraw %}/{% raw %}{{.project_name}}{% endraw %}/prod"
 
 # Include resource definition files
 # Path is relative to this databricks.yml.tmpl file
@@ -128,7 +128,7 @@ include:
 permissions:
   - level: CAN_MANAGE
     {{- if .team_permission_group }}
-    group_name: "{{.team_permission_group}}"
+    group_name: "{% raw %}{{.team_permission_group}}{% endraw %}"
     {{- end }}
   - level: CAN_VIEW
     group_name: users
@@ -136,24 +136,24 @@ permissions:
 
 **Explanation:**
 
-*   Variables are accessed directly, e.g., `{{.project_name}}`, `{{.databricks_host_prod}}`.
-*   The `include` path is relative to this file within the `template/{{.project_name}}` structure.
+*   Variables are accessed directly, e.g., `{% raw %}{{.project_name}}{% endraw %}`, `{% raw %}{{.databricks_host_prod}}{% endraw %}`.
+*   The `include` path is relative to this file within the `template/{% raw %}{{.project_name}}{% endraw %}` structure.
 
 
-### Example Job Resource Template (`template/{{.project_name}}/resources/{{.project_name}}_job.yml.tmpl`)
+### Example Job Resource Template (`template/{% raw %}{{.project_name}}{% endraw %}/resources/{% raw %}{{.project_name}}{% endraw %}_job.yml.tmpl`)
 
 This job definition template uses the variables and follows the naming convention.
 
 ```yaml
-# Located inside template/{{.project_name}}/resources/{{.project_name}}_job.yml.tmpl
+# Located inside template/{% raw %}{{.project_name}}{% endraw %}/resources/{% raw %}{{.project_name}}{% endraw %}_job.yml.tmpl
 resources:
   jobs:
     # Resource key can also use variables if needed, though static is often simpler
-    {{.project_name}}_job:
-      name: "[{{.project_name}}] Basic Job (${bundle.target})"
+    {% raw %}{{.project_name}}{% endraw %}_job:
+      name: "[{% raw %}{{.project_name}}{% endraw %}] Basic Job (${bundle.target})"
       tags:
-        project: "{{.project_name}}"
-        purpose: "{{.bundle_purpose}}"
+        project: "{% raw %}{{.project_name}}{% endraw %}"
+        purpose: "{% raw %}{{.bundle_purpose}}{% endraw %}"
         source: "DAB Template"
       tasks:
         - task_key: run_notebook
@@ -164,7 +164,7 @@ resources:
       permissions:
        {{- if .team_permission_group }}
         - level: CAN_MANAGE
-          group_name: "{{.team_permission_group}}"
+          group_name: "{% raw %}{{.team_permission_group}}{% endraw %}"
        {{- end }}
         - level: CAN_VIEW
           group_name: users
@@ -172,17 +172,17 @@ resources:
 
 **Explanation:**
 
-*   The filename itself (`{{.project_name}}_job.yml.tmpl`) uses template syntax.
-*   The resource key `{{.project_name}}_job:` also uses the variable.
-*   Variable access is `{{.variable_name}}`.
+*   The filename itself (`{% raw %}{{.project_name}}{% endraw %}_job.yml.tmpl`) uses template syntax.
+*   The resource key `{% raw %}{{.project_name}}{% endraw %}_job:` also uses the variable.
+*   Variable access is `{% raw %}{{.variable_name}}{% endraw %}`.
 *   The `notebook_path` is relative to the location of the generated `databricks.yml` file.
 
-### Placeholder Notebook (`template/{{.project_name}}/src/placeholder_notebook.py`)
+### Placeholder Notebook (`template/{% raw %}{{.project_name}}{% endraw %}/src/placeholder_notebook.py`)
 
 This file remains unchanged as it contains no template variables.
 
 ```python
-# Located inside template/{{.project_name}}/src/placeholder_notebook.py
+# Located inside template/{% raw %}{{.project_name}}{% endraw %}/src/placeholder_notebook.py
 # Databricks notebook source
 
 print("This is a placeholder notebook generated from the DAB template.")
@@ -207,7 +207,7 @@ To create a new project based on this official template structure:
 1.  **Navigate:** Open your terminal where you want the new project.
 2.  **Initialize:** Run `databricks bundle init <template_source>`.
 3.  **Answer Prompts:** Provide values based on the descriptions defined in `databricks_template_schema.json`.
-4.  **Project Generated:** A new directory named after the `project_name` you entered is created. Inside, the files from the template's `template/{{.project_name}}/` directory are copied, processed (substituting `{{.variable_name}}` values), and renamed (e.g., `.tmpl` removed, filenames with variables resolved).
+4.  **Project Generated:** A new directory named after the `project_name` you entered is created. Inside, the files from the template's `template/{% raw %}{{.project_name}}{% endraw %}/` directory are copied, processed (substituting `{% raw %}{{.variable_name}}{% endraw %}` values), and renamed (e.g., `.tmpl` removed, filenames with variables resolved).
 
 # Conclusion
 
@@ -222,4 +222,4 @@ Here are links to the official documentation for the key concepts discussed in t
     *   [Develop a Databricks Asset Bundle template](https://docs.databricks.com/en/dev-tools/bundles/templates.html) - Official guide on creating templates, including the `databricks_template_schema.json` structure.
     *   [Databricks Asset Bundles configuration](https://docs.databricks.com/en/dev-tools/bundles/settings.html) - Details on `databricks.yml` settings.
 *   **Go Templates**
-    *   [Go `text/template` Package Documentation](https://pkg.go.dev/text/template) - Official documentation for the Go template language used by Databricks Asset Bundles for variable substitution (`{{.variable_name}}`).
+    *   [Go `text/template` Package Documentation](https://pkg.go.dev/text/template) - Official documentation for the Go template language used by Databricks Asset Bundles for variable substitution (`{% raw %}{{.variable_name}}{% endraw %}`).
