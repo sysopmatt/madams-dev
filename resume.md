@@ -1,10 +1,10 @@
 ---
 layout: page
 title: Resume
-subtitle: Senior Data Platform Engineer | Databricks Platform Lead
+subtitle: Solutions Architect | Databricks | Healthcare & Life Sciences
 ---
 
-_Innovating Health & Life Sciences data solutions as a Databricks Platform Owner, specializing in Azure, Python, SQL, and Spark. Committed to DevOps and security best practices. Active contributor to open-source projects._
+_Solutions Architect at Databricks specializing in Healthcare & Life Sciences. Expert in data platform modernization, Azure, Python, SQL, and Spark. Committed to DevOps and security best practices. Active contributor to open-source projects._
 
 # Achievements
 
@@ -31,9 +31,14 @@ _Innovating Health & Life Sciences data solutions as a Databricks Platform Owner
 
 ## Work Experience
 
+### Databricks
+
+*   **Solutions Architect** (Jan 2026 - Present)
+    *   _Healthcare & Life Sciences, Remote_
+
 ### PacificSource Health Plans
 
-*   **Senior Data Platforms Developer** (Jun 2024 - Present)
+*   **Senior Data Platforms Developer** (Jun 2024 - Jan 2026, 1 yr 8 mos)
     *   _Accomplishments:_
         *   **Lead Data Platform Governance committee,** providing oversight and governance to the data platform.
         *   **Migrating core data platform from nightly refresh to real-time data ingestion** via streaming (Delta Live Tables, Spark Structured Streaming, Redis Cache, Kafka, Azure Event Hub, custom real-time APIs).

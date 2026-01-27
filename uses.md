@@ -27,7 +27,7 @@ This page details the tools and technologies I frequently use for development, d
 ### Cloud Platforms & Services
 
 *   **Primary Cloud:** Microsoft Azure
-*   **Data Platform:** Azure Databricks (including Unity Catalog, Delta Lake, DLT, Spark Streaming)
+*   **Data Platform:** Azure Databricks (including Unity Catalog, Delta Lake, Declarative Pipelines (DLT), Spark Streaming)
 *   **Azure Services:** Azure Blob Storage, Azure Data Factory, Azure Synapse Analytics (experience), Azure Networking (VNet, ExpressRoute, Firewall, etc.), Azure Event Hub
 *   **Other Clouds:** Experience with AWS, GCP
 *   **Databases:** SQL Server (experience), Redis (experience)
@@ -45,3 +45,7 @@ This page details the tools and technologies I frequently use for development, d
 *   **Collaboration:** Microsoft Teams, Slack
 *   **Office Suites:** Microsoft Office Suite (Word, Excel, PowerPoint, Outlook), Google Workspace (Docs, Sheets, Slides, Meet)
 *   **Diagramming:** Microsoft Visio, Draw.io (diagrams.net)
+
+
+
+
