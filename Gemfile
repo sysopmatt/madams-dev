@@ -2,7 +2,6 @@
 
 source "https://rubygems.org"
 
+gem "jekyll-theme-so-simple"
 gem "jekyll-archives"
-
-gemspec
-
+gem "webrick", "~> 1.8"
