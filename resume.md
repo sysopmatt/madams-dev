@@ -31,12 +31,12 @@ _Solutions Architect at Databricks specializing in Healthcare & Life Sciences. E
 
 ## Work Experience
 
-### Databricks
+### <img src="/assets/img/logo-databricks.png" alt="Databricks" style="height: 20px; vertical-align: middle;"> Databricks
 
 *   **Solutions Architect** (Jan 2026 - Present)
     *   _Healthcare & Life Sciences, Remote_
 
-### PacificSource Health Plans
+### <img src="/assets/img/logo-pacificsource.jpg" alt="PacificSource" style="height: 20px; vertical-align: middle;"> PacificSource Health Plans
 
 *   **Senior Data Platforms Developer** (Jun 2024 - Jan 2026, 1 yr 8 mos)
     *   _Accomplishments:_
