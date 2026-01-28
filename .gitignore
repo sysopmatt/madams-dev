@@ -11,3 +11,9 @@ _posts_future
 /*/.DS_Store
 .DS_Store
 assets/.DS_Store
+
+# Theme symlinks (local dev only)
+_layouts
+_includes
+_sass
+assets/css/main.scss
