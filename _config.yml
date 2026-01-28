@@ -1,7 +1,7 @@
 # Jekyll Theme Sleek Configuration
 # https://github.com/sysopmatt/jekyll-theme-sleek
 
-# remote_theme: sysopmatt/jekyll-theme-sleek  # Enable for GitHub Pages
+# remote_theme: sysopmatt/jekyll-theme-sleek  # enable for GitHub Pages
 
 # Site Settings
 title: Matt Adams
@@ -110,7 +110,7 @@ timezone: "America/Los_Angeles"
 
 # Plugins
 plugins:
-  # - jekyll-remote-theme  # Enable for GitHub Pages
+  # - jekyll-remote-theme  # enable for GitHub Pages
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-feed
