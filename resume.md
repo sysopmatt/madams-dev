@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Resume
+title: Matt Adams
 subtitle: Solutions Architect | Databricks | Healthcare & Life Sciences
 ---
 
@@ -31,12 +31,12 @@ _Solutions Architect at Databricks specializing in Healthcare & Life Sciences. E
 
 ## Work Experience
 
-### <img src="/assets/img/logo-databricks.png" alt="Databricks" style="height: 20px; vertical-align: middle;"> Databricks
+<h3><img src="/assets/img/logo-databricks.png" alt="Databricks" style="height: 20px; vertical-align: middle; margin-right: 8px; display: inline;">Databricks</h3>
 
 *   **Solutions Architect** (Jan 2026 - Present)
     *   _Healthcare & Life Sciences, Remote_
 
-### <img src="/assets/img/logo-pacificsource.jpg" alt="PacificSource" style="height: 20px; vertical-align: middle;"> PacificSource Health Plans
+<h3><img src="/assets/img/logo-pacificsource.jpg" alt="PacificSource" style="height: 20px; vertical-align: middle; margin-right: 8px; display: inline;">PacificSource Health Plans</h3>
 
 *   **Senior Data Platforms Developer** (Jun 2024 - Jan 2026, 1 yr 8 mos)
     *   _Accomplishments:_

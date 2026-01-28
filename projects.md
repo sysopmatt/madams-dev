@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Projects Portfolio
+title: Project Portfolio
 subtitle: Selected professional and personal projects
 ---
 

@@ -1,42 +1,72 @@
-# So Simple Theme Configuration
-# https://github.com/mmistakes/so-simple-theme
+# Jekyll Theme Sleek Configuration
+# https://github.com/sysopmatt/jekyll-theme-sleek
 
-theme: jekyll-theme-so-simple
+# remote_theme: sysopmatt/jekyll-theme-sleek  # Enable for GitHub Pages
 
 # Site Settings
-title: madams.dev
+title: Matt Adams
 description: "Solutions Architect at Databricks specializing in Healthcare & Life Sciences."
 url: "https://madams.dev"
 baseurl: ""
 logo: /assets/img/logo-cat-guitar.png
-date_format: "%B %-d, %Y"
-read_time: true
-words_per_minute: 200
+
+# Theme Settings
+theme_settings:
+  date_format: "%B %-d, %Y"
+  read_time: true
+  words_per_minute: 200
 
 # Site Author
 author:
   name: Matt Adams
-  picture: /assets/img/logo-cat-guitar.png
+  avatar: /assets/img/logo-cat-guitar.png
   email: probably-spam@madams.dev
-  links:
-    - title: GitHub
-      url: https://github.com/sysopmatt
-      icon: fab fa-github
-    - title: LinkedIn
-      url: https://linkedin.com/in/matt-adams-98ab05a3
-      icon: fab fa-linkedin
+  bio: "Solutions Architect at Databricks specializing in Healthcare & Life Sciences."
 
-# Footer Links
-footer_links:
+# Navigation (sidebar on desktop, bottom nav on mobile)
+navigation:
+  - title: Home
+    url: /
+    icon: fas fa-home
+  - title: Blog
+    url: /posts/
+    icon: fas fa-newspaper
+  - title: Resume
+    url: /resume/
+    icon: fas fa-file-alt
+  - title: Projects
+    url: /projects/
+    icon: fas fa-code
+  - title: Contribs
+    url: /contributions/
+    icon: fas fa-hands-helping
+  - title: Talks
+    url: /presentations/
+    icon: fas fa-microphone
+  - title: Resources
+    url: /resources/
+    icon: fas fa-book
+  - title: Uses
+    url: /uses/
+    icon: fas fa-tools
+  - title: Contact
+    url: /contact/
+    icon: fas fa-envelope
+
+# Social Links (sidebar icons)
+social_links:
   - title: GitHub
     url: https://github.com/sysopmatt
     icon: fab fa-github
   - title: LinkedIn
     url: https://linkedin.com/in/matt-adams-98ab05a3
     icon: fab fa-linkedin
-  - title: Feed
-    url: /feed.xml
-    icon: fas fa-rss-square
+  - title: Bluesky
+    url: https://bsky.app/profile/helloworld.madams.social
+    icon: fab fa-bluesky
+  - title: Email
+    url: mailto:probably-spam@madams.dev
+    icon: fas fa-envelope
 
 # Collections
 collections:
@@ -49,14 +79,13 @@ collections:
     output: true
     permalink: /:collection/:path/
 
-# Defaults - So Simple uses 'page' and 'post' layouts
+# Defaults
 defaults:
   - scope:
       path: ""
       type: posts
     values:
       layout: post
-      share: true
   - scope:
       path: ""
       type: pages
@@ -81,6 +110,7 @@ timezone: "America/Los_Angeles"
 
 # Plugins
 plugins:
+  # - jekyll-remote-theme  # Enable for GitHub Pages
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-feed
@@ -106,7 +136,6 @@ exclude:
   - Gemfile.lock
   - LICENSE
   - README.md
-  - beautiful-jekyll-theme.gemspec
 
 # Markdown
 markdown: kramdown
