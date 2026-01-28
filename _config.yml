@@ -34,15 +34,15 @@ navigation:
   - title: Blog
     url: /posts/
     icon: fas fa-newspaper
-  - title: Projects
-    url: /projects/
-    icon: fas fa-code
   - title: Contribs
     url: /contributions/
     icon: fas fa-hands-helping
   - title: Talks
     url: /presentations/
     icon: fas fa-microphone
+  - title: Projects
+    url: /projects/
+    icon: fas fa-code
   - title: Resources
     url: /resources/
     icon: fas fa-book
