@@ -7,6 +7,8 @@ author: Matt Adams
 ---
 
 
+> **Update:** As of DBR 18.0, Databricks has a built-in SQL command for this: `ANALYZE TABLE ... COMPUTE STORAGE METRICS`. It gives you active, vacuumable, and time travel byte breakdowns in a single statement, no cloud SDK required. I wrote about it [here](/2026-03-30-no-more-blob-crawling-table-storage-metrics-in-plain-sql/). The approach below still works and is useful if you need raw blob-level detail or are on an older runtime.
+
 Often when working with Unity Catalog, especially with managed tables, the underlying blob storage structure can feel a bit opaque. Understanding storage consumption at the blob level is crucial for cost analysis, identifying unexpectedly large tables, tracking storage growth patterns, and debugging storage issues. This guide provides a practical approach using Python and PySpark for Databricks administrators, data engineers, and platform owners who need to gain visibility into their managed table storage footprint on Azure Blob Storage.
 
 **Download Scripts:**
