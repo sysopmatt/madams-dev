@@ -31,7 +31,9 @@ You get a single row with the storage broken out into categories:
 | `time_travel_bytes` | Historical versions kept around for time travel and rollbacks |
 | `num_time_travel_files` | File count for time travel |
 
-The vacuumable vs. time travel split is the most useful part. You can immediately tell if a table is bloated because nobody's running `VACUUM`, or if it's just carrying a lot of history.
+The vacuumable vs. time travel split is the most useful part. You can immediately tell if a table is bloated because nobody's running `VACUUM`, or if it's just carrying a lot of history.  
+
+*Hint: Predictive Optimization is your friend who performs automatic `VACUUM` as needed*
 
 ## Example
 
